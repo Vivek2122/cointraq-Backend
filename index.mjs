@@ -35,14 +35,14 @@ const PORT = process.env.PORT || 8080;
 app.post("/logout", (req, res) => {
 	res.clearCookie("accessToken", {
 		httpOnly: true,
-		secure: false,
-		sameSite: "Lax",
+		secure: true,
+		sameSite: "None",
 		path: "/",
 	});
 	res.clearCookie("refreshToken", {
 		httpOnly: true,
-		secure: false,
-		sameSite: "Lax",
+		secure: true,
+		sameSite: "None",
 		path: "/",
 	});
 	res.status(200).json({ msg: "Logged out successfully." });
