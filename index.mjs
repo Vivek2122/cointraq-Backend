@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(
 	cors({
-		origin: `${process.env.BASE_URL}.com`,
+		origin: `${process.env.BASE_URL}`,
 		credentials: true,
 	})
 );
