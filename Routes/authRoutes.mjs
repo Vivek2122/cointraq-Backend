@@ -11,7 +11,7 @@ router.get(
 	"/google/callback",
 	passport.authenticate("google", {
 		session: false,
-		failureRedirect: "/login",
+		failureRedirect: "https://coin-traq.onrender.com/login",
 	}),
 	(req, res) => {
 		// Tokens from done(null, tokens) in the Google strategy
@@ -31,7 +31,7 @@ router.get(
 			maxAge: 7 * 24 * 60 * 60 * 1000,
 		});
 
-		res.redirect("/dashboard");
+		res.redirect("https://coin-traq.onrender.com/dashboard");
 	}
 );
 
