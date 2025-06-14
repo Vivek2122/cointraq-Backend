@@ -10,8 +10,6 @@ import transactionRouter from "./Routes/transactionRoutes.mjs";
 import authenticate from "./Controllers/authController.mjs";
 import Transaction from "./Models/transactionModel.mjs";
 import authRouter from "./Routes/authRoutes.mjs";
-import path from "path";
-import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -22,7 +20,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(
 	cors({
-		origin: `${process.env.BASE_URL}`,
+		origin: "https://coin-traq.onrender.com",
 		credentials: true,
 	})
 );
@@ -63,15 +61,6 @@ app.get("/dashboard", authenticate, async (req, res) => {
 app.use("/transaction", transactionRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);
-
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
-// app.use(express.static(path.join(__dirname, "dist")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "dist", "index.html"));
-// });
 
 app.listen(PORT, () => {
 	console.log(`server listening at port ${PORT}`);
