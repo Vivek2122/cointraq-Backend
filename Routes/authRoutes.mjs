@@ -1,18 +1,10 @@
 import express from "express";
 import passport from "passport";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 const router = express.Router();
-
-// Initial route to start Google OAuth
-router.get(
-	"/google",
-	passport.authenticate("google", {
-		scope: ["profile", "email"],
-	})
-);
 
 // Callback route after Google login
 router.get(
@@ -28,19 +20,27 @@ router.get(
 		res.cookie("accessToken", accessToken, {
 			httpOnly: true,
 			sameSite: "None",
-			secure: true, 
-			maxAge: 15 * 60 * 1000, 
+			secure: true,
+			maxAge: 15 * 60 * 1000,
 		});
 
 		res.cookie("refreshToken", refreshToken, {
 			httpOnly: true,
 			sameSite: "None",
-			secure: true, 
-			maxAge: 7 * 24 * 60 * 60 * 1000, 
+			secure: true,
+			maxAge: 7 * 24 * 60 * 60 * 1000,
 		});
 
 		res.redirect(`${process.env.BASE_URL}/dashboard`);
 	}
+);
+
+// Initial route to start Google OAuth
+router.get(
+	"/google",
+	passport.authenticate("google", {
+		scope: ["profile", "email"],
+	})
 );
 
 export default router;
