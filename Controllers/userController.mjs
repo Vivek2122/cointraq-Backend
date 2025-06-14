@@ -17,7 +17,42 @@ const generateRefreshToken = (userPayload) => {
 	});
 };
 
-const handleGoogleLogin = () => {};
+async function handleGoogleLogin(profile) {
+  // Extract basic info from profile
+  const email = profile.emails?.[0]?.value || "";
+  const name = profile.displayName || "";
+
+  // Find if user already exists
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    // Create a new user if not found
+    user = new User({
+      email,
+      name,
+      // any other default fields
+    });
+
+    await user.save();
+  }
+
+  // Generate JWT tokens for this user
+  const payload = {
+    id: user._id,
+    email: user.email,
+  };
+
+  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, {
+    expiresIn: "15m",
+  });
+
+  const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_KEY, {
+    expiresIn: "7d",
+  });
+
+  // Return tokens or any user info you want
+  return { accessToken, refreshToken, user };
+}
 
 const verifyAuthorization = (req, res) => {
 	try {
