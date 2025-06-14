@@ -11,6 +11,7 @@ import authenticate from "./Controllers/authController.mjs";
 import Transaction from "./Models/transactionModel.mjs";
 import authRouter from "./Routes/authRoutes.mjs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -63,11 +64,13 @@ app.use("/transaction", transactionRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(express.static(path.join(__dirname, "client/build")));
 
-// Wildcard route for React Router (must come after API routes and static files)
-app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "client/build", "index.html"));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 app.listen(PORT, () => {
